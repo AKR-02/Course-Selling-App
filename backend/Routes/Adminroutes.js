@@ -1,13 +1,10 @@
-import express from "express";
 import { Router } from "express";
 export const AdminRouter = Router();
 import bcrypt from "bcrypt"
-import mongoose from "mongoose";
 import { Admin,Course } from '../db/db.js';
-import { adminsignup,coursevali } from "../validationschema/adminval.js";
-import { adminauth } from "../middleware/Adminauth.js";
+import { signup,coursevali } from "../validationschema/adminval.js";
+import { Auth } from "../middleware/Auth.js";
 import jwt from "jsonwebtoken"
-import {z,json} from "zod";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -15,10 +12,10 @@ dotenv.config();
 
 // creating new admin account
 AdminRouter.post('/signup',async (req,res)=>{
-    const result = adminsignup.safeParse(req.body)
+    const result = signup.safeParse(req.body)
 
     if (!result.success){
-        return res.status(400).json({message:"Invalid Input", error: result.error.errors})
+        return res.status(400).json({message:"Invalid Input", error: result.error})
     }
 
     const {username,password} = result.data
@@ -54,11 +51,10 @@ AdminRouter.post('/login',async (req,res)=>{
             return res.json({message:"you are logined!",token:token})
         }
     });
-    
 });
 
 // Can create a new course
-AdminRouter.post('/new_course',adminauth,async (req,res,next)=>{
+AdminRouter.post('/Courses', Auth, async (req,res)=>{
     const result = coursevali.safeParse(req.body)
     
 
@@ -68,7 +64,7 @@ AdminRouter.post('/new_course',adminauth,async (req,res,next)=>{
 
     try{
         const sametitle = await Course.findOne({title: result.data.title});
-        if (sametitle){
+        if (sametitle) {
             return res.status(409).json({message:"A Course with this title already exists"})
         }
 
@@ -79,14 +75,38 @@ AdminRouter.post('/new_course',adminauth,async (req,res,next)=>{
     }
 });
 
+// delete an existing course
+AdminRouter.delete('/Courses/:id', Auth, async (req,res)=>{
+    try {
+    const id = req.params.id;
+    const findcourse = await Course.findOne({ _id: id });
+
+    if (findcourse) {
+      await Course.deleteOne({ _id: id });
+      return res.json({ message: "Course Deleted!" });
+    } else {
+      return res.status(404).json({ message: "Course not found!" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+});
 // Edits an existing course
-AdminRouter.put('/updateCourse',adminauth,async (req,res)=>{
+AdminRouter.put('/Courses/:id',Auth,async (req,res)=>{
 
 });
 
 // Returns all the courses/ can see all courses
-AdminRouter.get('/courses',adminauth,async (req,res)=>{
-    
+AdminRouter.get('/Courses',Auth,async (req,res)=>{
+    try{
+        const allCourses = await Course.find();
+        if (allCourses.length == 0) {
+            return res.json({message:"There are no courses available"});
+        }
+        return res.json(allCourses);
+    } catch(error){
+        return res.status(500).json({message:"database problem"})
+    }
 });
 
 

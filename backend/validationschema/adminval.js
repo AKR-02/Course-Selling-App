@@ -1,7 +1,7 @@
 
 import z from "zod";
 
-export const adminsignup = z.object({
+export const signup = z.object({
     username: z.string().min(3, "username must be atleast 3 characters"),
     password: z
         .string()

@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config()
 import jwt from "jsonwebtoken";
 
-export async function adminauth(req, res, next) {
+export async function Auth(req, res, next) {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
@@ -28,3 +28,5 @@ export async function adminauth(req, res, next) {
     return res.status(401).json({ message: "Invalid or expired token" });
   }
 }
+
+
