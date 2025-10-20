@@ -1,6 +1,6 @@
 import { Router } from "express";
 export const UserRouter = Router();
-import { User } from "../db/db.js";
+import { User,Course } from "../db/db.js";
 import bcrypt from "bcrypt";
 import { Auth } from "../middleware/Auth.js";
 import { signup,coursevali } from "../validationschema/adminval.js";
@@ -66,10 +66,17 @@ UserRouter.get('/courses',Auth, async (req,res)=>{
     }
 });
 //purchase a course
-UserRouter.post('/courses',Auth,async (req,res)=> {
-
+UserRouter.post('/courses/:id',Auth,async (req,res)=> {
+    const courseId = req.body.courseId;
+    if (!courseId) {
+        return res.status(404).json({message:"Please enter valid courseID"})
+    }
+    const courseFound = Course.findById(courseId);
+    if (!courseFound) {
+        return res.status(404).json({message:"course not found!"});
+    }
 })
 //List of all the courses purchased by the user
-UserRouter.get('/purchased_courses',Auth,async (req,res)=> {
+UserRouter.get('/purchasedCourses',Auth,async (req,res)=> {
 
 })
