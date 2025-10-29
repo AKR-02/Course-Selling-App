@@ -7,16 +7,16 @@ export const navbardata = [
     {
         id:2,
         title:"Courses",
-        link:"#",
+        link:"/courses",
     },
     {
         id:3,
         title:"About",
-        link:"#",
+        link:"/about",
     },{
         id:4,
         title:"Contact",
-        link:"#",
+        link:"/contact",
     },
 ]
 

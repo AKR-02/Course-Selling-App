@@ -1,16 +1,13 @@
 import { navbardata } from "./nav.js";
-import { Link } from 'react-router-dom';
-import { FiHome } from "react-icons/fi";
-import { MdMenuBook } from "react-icons/md";
+import { NavLink } from 'react-router-dom';
 import { IoMdMenu } from "react-icons/io";
-import { SiAboutdotme } from "react-icons/si";
 import { FaContao } from "react-icons/fa6";
 import { useState } from "react";
 
 export default function Nav(){
     const [Open,setOpen] = useState(false);
     return(
-        <nav className="font-display">
+        <nav className="font-display bg-gray-900 text-white">
             <div className="container mx-auto px-4 sm:px-8 lg:px-16 xl:px-20 2xl:px-24 flex justify-between items-center py-5">
                 {/* logo section */}
                 <div className="text-2xl flex items-center gap-2 font-bold uppercase">
@@ -25,7 +22,7 @@ export default function Nav(){
                             navbardata.map((item)=>{
                                 return (
                                     <li key={item.id}>
-                                        <Link to={item.link} className="inline-block py-1 px-3 hover:text-amber-500 font-bold">{item.title}</Link>
+                                        <NavLink to={item.link} className="inline-block py-1 px-3 hover:text-amber-500 font-bold">{item.title}</NavLink>
                                     </li>
                                 )
                             })
