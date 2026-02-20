@@ -7,7 +7,7 @@ import { useState } from "react";
 export default function Nav(){
     const [Open,setOpen] = useState(false);
     return(
-        <nav className="font-display bg-gray-900 text-white">
+        <nav className="font-display w-full bg-gray-900 text-white">
             <div className="container mx-auto px-4 sm:px-8 lg:px-16 xl:px-20 2xl:px-24 flex justify-between items-center py-5">
                 {/* logo section */}
                 <div className="text-2xl flex items-center gap-2 font-bold uppercase">

@@ -78,5 +78,5 @@ UserRouter.post('/courses/:id',Auth,async (req,res)=> {
 })
 //List of all the courses purchased by the user
 UserRouter.get('/purchasedCourses',Auth,async (req,res)=> {
-
+    
 })
